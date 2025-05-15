@@ -26,7 +26,7 @@ func NewApplicationMessage(src interface{}, structure *Structure) *Message {
 	if srcObj == nil {
 		return nil
 	}
-	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_application(srcObj, structure.Instance())))
+	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_application(srcObj, structure.copy())))
 }
 
 // NewAsyncDoneMessage builds a message that is posted when elements completed an ASYNC state change.
@@ -103,7 +103,7 @@ func NewCustomMessage(src interface{}, msgType MessageType, structure *Structure
 	if structure == nil {
 		return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_custom(C.GstMessageType(msgType), srcObj, nil)))
 	}
-	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_custom(C.GstMessageType(msgType), srcObj, structure.Instance())))
+	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_custom(C.GstMessageType(msgType), srcObj, structure.copy())))
 }
 
 // NewDeviceAddedMessage creates a new device-added message. The device-added message is produced by a DeviceProvider or a DeviceMonitor.
@@ -157,7 +157,7 @@ func NewElementMessage(src interface{}, structure *Structure) *Message {
 	if structure == nil {
 		return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_element(srcObj, nil)))
 	}
-	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_element(srcObj, structure.Instance())))
+	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_element(srcObj, structure.copy())))
 }
 
 // NewEOSMessage creates a new eos message. This message is generated and posted in the sink elements of a Bin. The bin will only forward
@@ -192,7 +192,7 @@ func NewErrorMessage(src interface{}, err error, debugStr string, structure *Str
 			srcObj,
 			gerr,
 			gdebugStr,
-			structure.Instance(),
+			structure.copy(),
 		)))
 	}
 
@@ -235,7 +235,7 @@ func NewInfoMessage(src interface{}, msg string, debugStr string, structure *Str
 			srcObj,
 			gerr,
 			gdebugStr,
-			structure.Instance(),
+			structure.copy(),
 		)))
 	}
 
@@ -361,7 +361,7 @@ func NewRedirectMessage(src interface{}, location string, tagList *TagList, entr
 		tl = tagList.Ref().Instance()
 	}
 	if entryStructure != nil {
-		st = entryStructure.Instance()
+		st = entryStructure.copy()
 	}
 	return FromGstMessageUnsafeFull(unsafe.Pointer(C.gst_message_new_redirect(
 		srcObj,
@@ -383,7 +383,7 @@ func (m *Message) AddRedirectEntry(location string, tagList *TagList, entryStruc
 		tl = tagList.Ref().Instance()
 	}
 	if entryStructure != nil {
-		st = entryStructure.Instance()
+		st = entryStructure.copy()
 	}
 	C.gst_message_add_redirect_entry(m.Instance(), loc, tl, st)
 }
@@ -621,7 +621,7 @@ func NewWarningMessage(src interface{}, msg string, debugStr string, structure *
 			srcObj,
 			gerr,
 			gdebugStr,
-			structure.Instance(),
+			structure.copy(),
 		))
 	}
 
