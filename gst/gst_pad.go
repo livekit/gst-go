@@ -887,7 +887,7 @@ func (p *Pad) SetEventFullFunction(f PadEventFullFunc) {
 	notifyInfo := p.registerCallback(f, padEventFullFuncs)
 	C.gst_pad_set_event_full_function_full(
 		p.Instance(),
-		C.GstPadEventFullFunction(C.cgoGstPadEventFullFunction),
+		C.GstPadActivateFunction(C.cgoGstPadEventFullFunction),
 		(C.gpointer)(unsafe.Pointer(notifyInfo)),
 		C.GDestroyNotify(C.cgoPadFuncDestroyNotify),
 	)
@@ -903,7 +903,7 @@ func (p *Pad) SetEventFunction(f PadEventFunc) {
 	notifyInfo := p.registerCallback(f, padEventFuncs)
 	C.gst_pad_set_event_function_full(
 		p.Instance(),
-		C.GstPadEventFunction(C.cgoGstPadEventFunction),
+		C.GstPadActivateFunction(C.cgoGstPadEventFunction),
 		(C.gpointer)(unsafe.Pointer(notifyInfo)),
 		C.GDestroyNotify(C.cgoPadFuncDestroyNotify),
 	)
