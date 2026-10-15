@@ -132,7 +132,6 @@ func (e *ElementFactory) GetMetadata(key string) string {
 	ckey := C.CString(key)
 	defer C.free(unsafe.Pointer(ckey))
 	res := C.gst_element_factory_get_metadata((*C.GstElementFactory)(e.Instance()), (*C.gchar)(ckey))
-	defer C.free(unsafe.Pointer(res))
 	return C.GoString(res)
 }
 
